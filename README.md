@@ -1,16 +1,11 @@
-# cupcakelab
+# CupCakeLab
+<p align='justify'><b>CupCakeLab</b> is a Flutter project assigned by <b>Dr. Rizal Bin Mohd Nor</b> for CSCI 4311: <i>Mobile Application Development</i>.</p>
 
-A Flutter project for Mobile Apps Development final assessment.
+### Group Members (Laravel)
+| No. | Name  | Matric No |
+| :-: | :---- | :-------: |
+| 1   | Alya Aqilah Binti Ahmad Kamran   | 2011192 |
+| 2   | Nazurin Qamarina Binti Jamaludin | 2118478 |
+| 3   | Muhammad Hadif Bin Mohd Hatta    | 2114589 |
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+<sub>* Please note that all the works are distributed equally; all commits in this repository don't determine the project distributions since not everyone is familiar with using GitHub.</sub>

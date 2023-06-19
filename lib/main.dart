@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import './recipe_card.dart';
 
 void main() {
   runApp(const CupCakeLab());
@@ -15,19 +16,19 @@ class CupCakeLab extends StatelessWidget {
           colorSchemeSeed: Colors.pink,
           useMaterial3: true,
       ),
-      home: const HomePage(),
+      home: const HomeScreen(),
     );
   }
 }
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,7 +45,7 @@ class _HomePageState extends State<HomePage> {
                 shadowColor: MaterialStateColor.resolveWith(
                   (states) => Colors.transparent
                 ),
-                leading: const Icon(Icons.cookie_outlined),
+                leading: const Icon(Icons.menu),
                 hintText: 'Search...',
                 padding: MaterialStateProperty.all<EdgeInsets>(
                     const EdgeInsets.symmetric(horizontal: 16.0)
@@ -54,6 +55,15 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             ),
+            // TODO: Create a list view of RecipeCard widgets.
+            const Column(
+              children: [
+                RecipeCard(
+                  name: 'Chocolate Cupcake',
+                  description: 'A delicious chocolate cupcake recipe',
+                ),
+              ],
+            )
           ],
         ),
       ),
@@ -69,7 +79,7 @@ class _HomePageState extends State<HomePage> {
           ),
           NavigationDestination(
             icon: Icon(Icons.circle_outlined),
-            label: 'Favorite',
+            label: 'Favorites',
           ),
         ]
       )

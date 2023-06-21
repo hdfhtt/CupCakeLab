@@ -29,21 +29,19 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  Widget _currentFragment = LatestFragment();
+  final List<Widget> _fragments = [
+    LatestFragment(),
+    const OtherFragment(),
+    const FavoritesFragment()
+  ];
+
   int _selectedTabIndex = 0;
+  Widget _currentFragment = LatestFragment();
 
   void _onDestinationSelected(int index) {
     setState(() {
       _selectedTabIndex = index;
-
-      switch(index) {
-        case 1: _currentFragment = const OtherFragment();
-          break;
-        case 2: _currentFragment = const FavoritesFragment();
-          break;
-        default: _currentFragment = LatestFragment();
-          break;
-      }
+      _currentFragment = index < _fragments.length ? _fragments[index] : LatestFragment();
     });
   }
 
@@ -73,13 +71,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 shadowColor: MaterialStateColor.resolveWith(
                   (states) => Colors.transparent
                 ),
-                leading: const Icon(Icons.menu),
+                leading: const Icon(Icons.menu_outlined),
                 hintText: 'Search...',
                 padding: MaterialStateProperty.all<EdgeInsets>(
                   const EdgeInsets.symmetric(horizontal: 16.0)
                 ),
                 trailing: const [
-                  Icon(Icons.search),
+                  Icon(Icons.search_outlined),
                 ],
               ),
             ),

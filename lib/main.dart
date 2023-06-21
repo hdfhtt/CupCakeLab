@@ -13,8 +13,8 @@ class CupCakeLab extends StatelessWidget {
     return MaterialApp(
       title: 'CupCakeLab',
       theme: ThemeData(
-          colorSchemeSeed: Colors.pink,
-          useMaterial3: true,
+        colorSchemeSeed: Colors.pink,
+        useMaterial3: true,
       ),
       home: const HomeScreen(),
     );
@@ -29,16 +29,18 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final recipes = List<String>.generate(100, (index) => 'Recipe ${index + 1}');
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        margin: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            SafeArea(child:
-              SearchBar(
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          SafeArea(
+            child: Container(
+              padding: const EdgeInsets.all(16.0),
+              child: SearchBar(
                 backgroundColor: MaterialStateColor.resolveWith(
                   (states) => Theme.of(context).colorScheme.background
                 ),
@@ -55,17 +57,21 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             ),
-            // TODO: Create a list view of RecipeCard widgets.
-            const Column(
-              children: [
-                RecipeCard(
-                  name: 'Chocolate Cupcake',
-                  description: 'A delicious chocolate cupcake recipe',
-                ),
-              ],
-            )
-          ],
-        ),
+          ),
+          // TODO: Create a list view of RecipeCard widgets.
+          Expanded(
+            child: ListView.builder(
+              itemCount: recipes.length,
+              itemBuilder: (context, index) {
+                final recipe = recipes[index];
+                return RecipeCard(
+                  name: recipe,
+                  description: 'Lorem ipsum dolor si amet.'
+                );
+              },
+            ),
+          ),
+        ],
       ),
       bottomNavigationBar: NavigationBar(
         destinations: const <NavigationDestination>[

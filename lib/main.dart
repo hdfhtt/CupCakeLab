@@ -29,17 +29,39 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final recipes = List<String>.generate(100, (index) => 'Recipe ${index + 1}');
+  final recipes = List<String>.generate(10, (index) => 'Recipe ${index + 1}');
   
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
+      body: Stack(
         children: [
+          Flex(
+            direction: Axis.vertical,
+            children: [
+              Expanded(
+                child: ListView.builder(
+                  itemCount: recipes.length,
+                  itemBuilder: (context, index) {
+                    final recipe = recipes[index];
+
+                    if (index == 0) {
+                      /* Create first item as padding */
+                      return const SizedBox(height: 82.0);
+                    } else {
+                      return RecipeCard(
+                        name: recipe,
+                        description: 'Lorem ipsum dolor si amet.'
+                      );
+                    }
+                  },
+                ),
+              ),
+            ],
+          ),
           SafeArea(
             child: Container(
-              padding: const EdgeInsets.all(16.0),
+              margin: const EdgeInsets.all(16.0),
               child: SearchBar(
                 backgroundColor: MaterialStateColor.resolveWith(
                   (states) => Theme.of(context).colorScheme.background
@@ -50,25 +72,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 leading: const Icon(Icons.menu),
                 hintText: 'Search...',
                 padding: MaterialStateProperty.all<EdgeInsets>(
-                    const EdgeInsets.symmetric(horizontal: 16.0)
+                  const EdgeInsets.symmetric(horizontal: 16.0)
                 ),
                 trailing: const [
                   Icon(Icons.search),
                 ],
               ),
-            ),
-          ),
-          // TODO: Create a list view of RecipeCard widgets.
-          Expanded(
-            child: ListView.builder(
-              itemCount: recipes.length,
-              itemBuilder: (context, index) {
-                final recipe = recipes[index];
-                return RecipeCard(
-                  name: recipe,
-                  description: 'Lorem ipsum dolor si amet.'
-                );
-              },
             ),
           ),
         ],

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import './recipe.dart';
 import './recipe_card.dart';
 
 void main() {
   runApp(const CupCakeLab());
 }
+
+late Future<List<Recipe>> futurePopularRecipe;
 
 class CupCakeLab extends StatelessWidget {
   const CupCakeLab({super.key});
@@ -30,19 +33,25 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final List<Widget> _fragments = [
-    LatestFragment(),
+    const PopularFragment(),
     const OtherFragment(),
     const FavoritesFragment()
   ];
 
   int _selectedTabIndex = 0;
-  Widget _currentFragment = LatestFragment();
+  Widget _currentFragment = const PopularFragment();
 
   void _onDestinationSelected(int index) {
     setState(() {
       _selectedTabIndex = index;
-      _currentFragment = index < _fragments.length ? _fragments[index] : LatestFragment();
+      _currentFragment = index < _fragments.length ? _fragments[index] : const PopularFragment();
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    futurePopularRecipe = fetchRecipe('cupcake');
   }
 
   @override
@@ -92,7 +101,7 @@ class _HomeScreenState extends State<HomeScreen> {
           NavigationDestination(
             icon: Icon(Icons.auto_awesome_outlined),
             selectedIcon: Icon(Icons.auto_awesome),
-            label: 'Latest',
+            label: 'Popular',
           ),
           NavigationDestination(
             icon: Icon(Icons.cookie_outlined),
@@ -110,26 +119,33 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-class LatestFragment extends StatelessWidget {
-  final recipes = List<String>.generate(10, (index) => 'Recipe ${index + 1}');
-
-  LatestFragment({super.key});
+class PopularFragment extends StatelessWidget {
+  const PopularFragment({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: recipes.length,
-      itemBuilder: (context, index) {
-        final recipe = recipes[index];
+    return FutureBuilder<List<Recipe>>(
+      future: futurePopularRecipe,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        } else if (snapshot.hasData) {
+          return ListView.builder(
+            itemCount: snapshot.data!.length,
+            itemBuilder: (context, index) {
+              if (index == 0) {
+                return const SizedBox(height: 82.0);
+              } else {
+                final recipe = snapshot.data![index - 1];
 
-        if (index == 0) {
-          /* Create first item as padding */
-          return const SizedBox(height: 82.0);
-        } else {
-          return RecipeCard(
-              name: recipe,
-              description: 'Lorem ipsum dolor si amet.'
+                return RecipeCard(name: recipe.title, description: '');
+              }
+            }
           );
+        } else {
+          return const Center(child: Text('No recipe found.'));
         }
       },
     );

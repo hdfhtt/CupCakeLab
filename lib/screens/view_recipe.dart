@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class ViewRecipeScreen extends StatefulWidget {
   const ViewRecipeScreen({super.key});
 
@@ -67,7 +66,7 @@ class _ViewRecipeScreenState extends State<ViewRecipeScreen> {
               ),
               const SizedBox(height: 24.0),
               Image.asset(
-                ("assets/icon/vanilla.jpeg"),
+                ("assets/vanilla.jpeg"),
                 height: 250.0,
                 fit: BoxFit.contain,
               ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import './view_recipe.dart';
+import 'screens/view_recipe.dart';
 
 // TODO: Finalize RecipeCard widget.
 class RecipeCard extends StatelessWidget {

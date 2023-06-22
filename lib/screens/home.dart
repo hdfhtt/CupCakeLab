@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../recipe.dart';
-import '../recipe_card.dart';
 
 late Future<List<Recipe>> futurePopularRecipe;
 
@@ -120,7 +119,7 @@ class PopularFragment extends StatelessWidget {
                 } else {
                   final recipe = snapshot.data![index - 1];
 
-                  return RecipeCard(name: recipe.title, description: '');
+                  return RecipeCard(id: recipe.id, title: recipe.title, image: recipe.image);
                 }
               }
           );

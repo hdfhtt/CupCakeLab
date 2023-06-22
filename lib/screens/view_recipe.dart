@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 
 class ViewRecipeScreen extends StatefulWidget {
-  const ViewRecipeScreen({super.key});
+  const ViewRecipeScreen({super.key, required this.id, required this.title, required this.image});
+
+  final int id;
+  final String title;
+  final String image;
 
   @override
   _ViewRecipeScreenState createState() => _ViewRecipeScreenState();
 }
 
 class _ViewRecipeScreenState extends State<ViewRecipeScreen> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,14 +64,12 @@ class _ViewRecipeScreenState extends State<ViewRecipeScreen> {
               ),
               SizedBox(
                 width: MediaQuery.of(context).size.width / 1.5,
-                child: const Text(
-                  "Classic Vanilla",
+                child: Text(widget.title,
                   style: TextStyle(fontSize: 36.0, fontFamily: "HellixBold"),
                 ),
               ),
               const SizedBox(height: 24.0),
-              Image.asset(
-                ("assets/vanilla.jpeg"),
+              Image.network(widget.image,
                 height: 250.0,
                 fit: BoxFit.contain,
               ),

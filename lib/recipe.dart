@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'screens/view_recipe.dart';
 
 class Recipe {
   final int id;
@@ -52,5 +54,55 @@ Future<List<Recipe>> fetchRecipe(String query) async {
     return recipes;
   } else {
     throw Exception('Error ${response.statusCode}');
+  }
+}
+
+class RecipeCard extends StatelessWidget {
+  const RecipeCard({
+    super.key,
+    required this.id,
+    required this.title,
+    required this.image,
+  });
+
+  final int id;
+  final String title;
+  final String image;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(
+            builder: (context) => ViewRecipeScreen(
+              id: id,
+              title: title,
+              image: image,
+            )
+        ));
+      },
+      child: Ink(
+        child: Card(
+            elevation: 0,
+            shape: RoundedRectangleBorder(
+              side: BorderSide(
+                color: Theme
+                    .of(context)
+                    .colorScheme
+                    .outline,
+              ),
+              borderRadius: const BorderRadius.all(Radius.circular(12)),
+            ),
+            child: ListTile(
+              title: Image.network(image,
+                  fit: BoxFit.fitWidth,
+                  height: 200,
+                  width: 400
+              ),
+              subtitle: Text(title),
+            )
+        ),
+      ),
+    );
   }
 }

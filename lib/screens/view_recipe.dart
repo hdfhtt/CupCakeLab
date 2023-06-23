@@ -1,5 +1,5 @@
-import 'package:CupCakeLab/instruction.dart';
 import 'package:flutter/material.dart';
+import '../instruction.dart';
 
 class ViewRecipeScreen extends StatefulWidget {
   const ViewRecipeScreen({super.key, required this.id, required this.title, required this.image});
@@ -69,7 +69,7 @@ class ViewRecipeScreenState extends State<ViewRecipeScreen> {
               future: futureRecipeInstructions,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: Text('Loading instructions...'));
+                  return const Center(child: LinearProgressIndicator());
                 } else if (snapshot.hasError) {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 } else if (snapshot.hasData) {
@@ -103,7 +103,7 @@ class ViewRecipeScreenState extends State<ViewRecipeScreen> {
                     }
                   );
                   } else {
-                    return const Center(child: Text('No available instruction!'));
+                    return const Center(child: Text('Instructions are not yet available.'));
                   }
                 }
               ),

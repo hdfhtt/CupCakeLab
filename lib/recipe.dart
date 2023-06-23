@@ -54,7 +54,7 @@ Future<List<Recipe>> fetchRecipe(String query) async {
 
     return recipes;
   } else {
-    throw Exception('Error ${response.statusCode}');
+    throw Exception(response.statusCode);
   }
 }
 
@@ -74,7 +74,7 @@ Future<List<String>> fetchRecipeIngredients(int id) async {
 
     return ingredients;
   } else {
-    throw Exception('Error ${response.statusCode}');
+    throw Exception(response.statusCode);
   }
 }
 
@@ -92,36 +92,42 @@ class RecipeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        Navigator.push(context, MaterialPageRoute(
+    return Card(
+      clipBehavior: Clip.antiAliasWithSaveLayer,
+      // color: Theme.of(context).colorScheme.surfaceVariant,
+      elevation: 1.0,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(16.0),
+        onTap: () {
+          Navigator.push(context, MaterialPageRoute(
             builder: (context) => ViewRecipeScreen(
               id: id,
               title: title,
               image: image,
             )
-        ));
-      },
-      child: Ink(
-        child: Card(
-            elevation: 0,
-            shape: RoundedRectangleBorder(
-              side: BorderSide(
-                color: Theme
-                    .of(context)
-                    .colorScheme
-                    .outline,
-              ),
-              borderRadius: const BorderRadius.all(Radius.circular(12)),
+          ));
+        },
+        child: Column(
+          children: [
+            Image.network(image,
+              height: 176.0,
+              width: double.infinity,
+              fit: BoxFit.cover,
+              filterQuality: FilterQuality.high,
+              isAntiAlias: true,
             ),
-            child: ListTile(
-              title: Image.network(image,
-                  fit: BoxFit.fitWidth,
-                  height: 200,
-                  width: 400
+
+            Container(
+              padding: const EdgeInsets.all(16.0),
+              height: 80.0,
+              width: double.infinity,
+              child: Text(title,
+                style: Theme.of(context).textTheme.titleMedium,
+                textAlign: TextAlign.left,
+                maxLines: 2,
               ),
-              subtitle: Text(title),
-            )
+            ),
+          ],
         ),
       ),
     );

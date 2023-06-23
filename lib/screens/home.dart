@@ -36,64 +36,65 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Stack(
-          children: [
-            Flex(
-              direction: Axis.vertical,
-              children: [
-                Expanded(
-                    child: Container(
-                      alignment: Alignment.center,
-                      child: _currentFragment,
-                    )
+      body: Stack(
+        children: [
+          Flex(
+            direction: Axis.vertical,
+            children: [
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  alignment: Alignment.center,
+                  child: _currentFragment,
+                )
+              ),
+            ],
+          ),
+          SafeArea(
+            child: Container(
+              margin: const EdgeInsets.all(16.0),
+              child: SearchBar(
+                backgroundColor: MaterialStateColor.resolveWith(
+                  (states) => Theme.of(context).colorScheme.background
                 ),
-              ],
-            ),
-            SafeArea(
-              child: Container(
-                margin: const EdgeInsets.all(16.0),
-                child: SearchBar(
-                  backgroundColor: MaterialStateColor.resolveWith(
-                    (states) => Theme.of(context).colorScheme.background
-                  ),
-                  shadowColor: MaterialStateColor.resolveWith(
-                    (states) => Colors.transparent
-                  ),
-                  leading: const Icon(Icons.menu_outlined),
-                  hintText: 'Search...',
-                  padding: MaterialStateProperty.all<EdgeInsets>(
-                      const EdgeInsets.symmetric(horizontal: 16.0)
-                  ),
-                  trailing: const [
-                    Icon(Icons.search_outlined),
-                  ],
+                shadowColor: MaterialStateColor.resolveWith(
+                  (states) => Colors.transparent
                 ),
+                leading: const Icon(Icons.menu_outlined),
+                hintText: 'Search...',
+                padding: MaterialStateProperty.all<EdgeInsets>(
+                    const EdgeInsets.symmetric(horizontal: 16.0)
+                ),
+                trailing: const [
+                  Icon(Icons.search_outlined),
+                ],
               ),
             ),
-          ],
-        ),
-        bottomNavigationBar: NavigationBar(
-            labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
-            selectedIndex: _selectedTabIndex,
-            onDestinationSelected: _onDestinationSelected,
-            destinations: const <NavigationDestination>[
-              NavigationDestination(
-                icon: Icon(Icons.auto_awesome_outlined),
-                selectedIcon: Icon(Icons.auto_awesome),
-                label: 'Popular',
-              ),
-              NavigationDestination(
-                icon: Icon(Icons.cookie_outlined),
-                selectedIcon: Icon(Icons.cookie),
-                label: 'Other Recipes',
-              ),
-              NavigationDestination(
-                icon: Icon(Icons.favorite_outline),
-                selectedIcon: Icon(Icons.favorite),
-                label: 'Favorites',
-              ),
-            ]
-        )
+          ),
+        ],
+      ),
+      bottomNavigationBar: NavigationBar(
+        labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
+        selectedIndex: _selectedTabIndex,
+        onDestinationSelected: _onDestinationSelected,
+        destinations: const <NavigationDestination>[
+          NavigationDestination(
+            icon: Icon(Icons.auto_awesome_outlined),
+            selectedIcon: Icon(Icons.auto_awesome),
+            label: 'Popular',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.cookie_outlined),
+            selectedIcon: Icon(Icons.cookie),
+            label: 'Other Recipes',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.favorite_outline),
+            selectedIcon: Icon(Icons.favorite),
+            label: 'Favorites',
+          ),
+        ]
+      )
     );
   }
 }
@@ -115,11 +116,14 @@ class PopularFragment extends StatelessWidget {
             itemCount: snapshot.data!.length,
             itemBuilder: (context, index) {
               if (index == 0) {
-                return const SizedBox(height: 82.0);
+                return const SizedBox(height: 86.0);
               } else {
                 final recipe = snapshot.data![index - 1];
 
-                return RecipeCard(id: recipe.id, title: recipe.title, image: recipe.image);
+                return Container(
+                  margin: const EdgeInsets.only(bottom: 8.0),
+                  child: RecipeCard(id: recipe.id, title: recipe.title, image: recipe.image),
+                );
               }
             }
           );

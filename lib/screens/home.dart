@@ -54,10 +54,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 margin: const EdgeInsets.all(16.0),
                 child: SearchBar(
                   backgroundColor: MaterialStateColor.resolveWith(
-                          (states) => Theme.of(context).colorScheme.background
+                    (states) => Theme.of(context).colorScheme.background
                   ),
                   shadowColor: MaterialStateColor.resolveWith(
-                          (states) => Colors.transparent
+                    (states) => Colors.transparent
                   ),
                   leading: const Icon(Icons.menu_outlined),
                   hintText: 'Search...',
@@ -112,16 +112,16 @@ class PopularFragment extends StatelessWidget {
           return Center(child: Text('Error: ${snapshot.error}'));
         } else if (snapshot.hasData) {
           return ListView.builder(
-              itemCount: snapshot.data!.length,
-              itemBuilder: (context, index) {
-                if (index == 0) {
-                  return const SizedBox(height: 82.0);
-                } else {
-                  final recipe = snapshot.data![index - 1];
+            itemCount: snapshot.data!.length,
+            itemBuilder: (context, index) {
+              if (index == 0) {
+                return const SizedBox(height: 82.0);
+              } else {
+                final recipe = snapshot.data![index - 1];
 
-                  return RecipeCard(id: recipe.id, title: recipe.title, image: recipe.image);
-                }
+                return RecipeCard(id: recipe.id, title: recipe.title, image: recipe.image);
               }
+            }
           );
         } else {
           return const Center(child: Text('No recipe found.'));

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'screens/view_recipe.dart';
 
+import './main.dart';
+
 class Recipe {
   final int id;
   final String title;
@@ -23,8 +25,6 @@ class Recipe {
   }
 }
 
-const String apiKey = 'c65fcf39f282417ea467298705e9c52d';
-
 /* Make sure to add the following permission in AndroidManifest.xml
  * <!-- Required to fetch data from the internet. -->
  * <uses-permission android:name="android.permission.INTERNET" />
@@ -34,6 +34,7 @@ Future<List<Recipe>> fetchRecipe(String query) async {
   final queryParameters = {
     'apiKey': apiKey,
     'query': query,
+    'sort': 'random',
   };
 
   final uri = Uri.https('api.spoonacular.com', '/recipes/complexSearch', queryParameters);
@@ -52,6 +53,26 @@ Future<List<Recipe>> fetchRecipe(String query) async {
     }
 
     return recipes;
+  } else {
+    throw Exception('Error ${response.statusCode}');
+  }
+}
+
+Future<List<String>> fetchRecipeIngredients(int id) async {
+  final response = await http.get(Uri.parse('https://api.spoonacular.com/recipes/$id/ingredientWidget.json'));
+
+  if (response.statusCode == 200) {
+    List<String> ingredients = [];
+
+    Map<String, dynamic> data = jsonDecode(response.body);
+
+    List<dynamic> results = data['ingredients'];
+
+    for (var result in results) {
+      ingredients.add(result);
+    }
+
+    return ingredients;
   } else {
     throw Exception('Error ${response.statusCode}');
   }

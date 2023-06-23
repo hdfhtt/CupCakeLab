@@ -5,6 +5,14 @@ import 'screens/view_recipe.dart';
 
 import './main.dart';
 
+final List<dynamic> prefetchRecipes = [
+  {'id': 618602, 'title': 'Classic Vanilla Cupcake', 'image': 'https://www.allrecipes.com/thmb/GsldgnTeewAv5eEqoxQ7E1iAKO8=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/157877-vanilla-cupcakes-ddmfs-2X1-0399-1b671dfd598548b1b0339076d062a758.jpg'},
+  {'id': 462433, 'title': 'Chocolate Fudge Cupcake', 'image': 'https://moversandbakers.co.uk/wp-content/uploads/2022/05/Chocolate-Fudge-Cupcakes_0770.jpg'},
+  {'id': 658108, 'title': 'Red Velvet Cupcake', 'image': 'https://freshaprilflours.com/wp-content/uploads/2017/09/rv-cupcakes-07.jpg'},
+  {'id': 1002592, 'title': 'Lemon Blueberry Cupcake', 'image': 'https://bubbapie.com/wp-content/uploads/2020/02/Lemon-Blueberry-Cupcakes.jpg'},
+  {'id': 350420, 'title': 'Carrot Cupcake with Cream Cheese Frosting', 'image': 'https://eatsbythebeach.com/wp-content/uploads/2022/02/Ultimate-Carrot-Cake-Cupcakes-1-Eats-By-The-Beach.jpeg'},
+];
+
 class Recipe {
   final int id;
   final String title;
@@ -94,8 +102,8 @@ class RecipeCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       clipBehavior: Clip.antiAliasWithSaveLayer,
-      // color: Theme.of(context).colorScheme.surfaceVariant,
       elevation: 1.0,
+      margin: const EdgeInsets.symmetric(vertical: 8.0),
       child: InkWell(
         borderRadius: BorderRadius.circular(16.0),
         onTap: () {

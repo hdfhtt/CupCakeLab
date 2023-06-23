@@ -13,17 +13,17 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final List<Widget> _fragments = [
     const PopularFragment(),
-    const OtherFragment(),
+    const BrowseFragment(),
     const FavoritesFragment()
   ];
 
   int _selectedTabIndex = 0;
-  Widget _currentFragment = const PopularFragment();
+  Widget _currentFragment = const BrowseFragment();
 
   void _onDestinationSelected(int index) {
     setState(() {
       _selectedTabIndex = index;
-      _currentFragment = index < _fragments.length ? _fragments[index] : const PopularFragment();
+      _currentFragment = index < _fragments.length ? _fragments[index] : const BrowseFragment();
     });
   }
 
@@ -38,17 +38,10 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       body: Stack(
         children: [
-          Flex(
-            direction: Axis.vertical,
-            children: [
-              Expanded(
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  alignment: Alignment.center,
-                  child: _currentFragment,
-                )
-              ),
-            ],
+          Container(
+            padding: const EdgeInsets.only(top: 80.0),
+            margin: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: _currentFragment,
           ),
           SafeArea(
             child: Container(
@@ -79,14 +72,12 @@ class _HomeScreenState extends State<HomeScreen> {
         onDestinationSelected: _onDestinationSelected,
         destinations: const <NavigationDestination>[
           NavigationDestination(
-            icon: Icon(Icons.auto_awesome_outlined),
-            selectedIcon: Icon(Icons.auto_awesome),
+            icon: Icon(Icons.insights_outlined),
             label: 'Popular',
           ),
           NavigationDestination(
-            icon: Icon(Icons.cookie_outlined),
-            selectedIcon: Icon(Icons.cookie),
-            label: 'Other Recipes',
+            icon: Icon(Icons.search_outlined),
+            label: 'Browse',
           ),
           NavigationDestination(
             icon: Icon(Icons.favorite_outline),
@@ -99,8 +90,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-class PopularFragment extends StatelessWidget {
-  const PopularFragment({super.key});
+class BrowseFragment extends StatelessWidget {
+  const BrowseFragment({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -115,17 +106,9 @@ class PopularFragment extends StatelessWidget {
           return ListView.builder(
             itemCount: snapshot.data!.length,
             itemBuilder: (context, index) {
-              if (index == 0) {
-                return const SizedBox(height: 86.0);
-              } else {
-                final recipe = snapshot.data![index - 1];
-
-                return Container(
-                  margin: const EdgeInsets.only(bottom: 8.0),
-                  child: RecipeCard(id: recipe.id, title: recipe.title, image: recipe.image),
-                );
-              }
-            }
+              final recipe = snapshot.data![index];
+              return RecipeCard(id: recipe.id, title: recipe.title, image: recipe.image);
+            },
           );
         } else {
           return const Center(child: Text('No recipe found.'));
@@ -140,15 +123,28 @@ class FavoritesFragment extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Text('This will show a list of recipes that has been favorite.');
+    return const Center(child: Text('All your saved recipe will be appear here.'));
   }
 }
 
-class OtherFragment extends StatelessWidget {
-  const OtherFragment({super.key});
+class PopularFragment extends StatelessWidget {
+  const PopularFragment({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Text('This will show any other types of recipe beside cupcakes.');
+    return SingleChildScrollView(
+      child: ListView.builder(
+        physics: const NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
+        itemCount: prefetchRecipes.length,
+        itemBuilder: (context, index) {
+          return RecipeCard(
+            id: prefetchRecipes[index]['id'],
+            title: prefetchRecipes[index]['title'],
+            image: prefetchRecipes[index]['image'],
+          );
+        },
+      ),
+    );
   }
 }

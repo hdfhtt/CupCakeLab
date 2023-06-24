@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../recipe.dart';
 
-late Future<List<Recipe>> futurePopularRecipe;
+late Future<List<Recipe>> futureBrowseRecipe;
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -17,6 +17,9 @@ class _HomeScreenState extends State<HomeScreen> {
     const FavoritesFragment()
   ];
 
+  final TextEditingController _searchController = TextEditingController();
+  final FocusNode _searchFocusNode = FocusNode();
+
   int _selectedTabIndex = 0;
   Widget _currentFragment = const PopularFragment();
 
@@ -27,10 +30,31 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  void _onSearchButtonPressed() {
+    if (_searchController.text.isNotEmpty) {
+      setState(() {
+        _selectedTabIndex = 1;
+        futureBrowseRecipe = fetchRecipe('${_searchController.text} cupcake');
+
+        _searchController.clearComposing();
+        _searchController.clear();
+        _searchFocusNode.unfocus();
+
+        _currentFragment = const BrowseFragment();
+      });
+    }
+  }
+
   @override
   void initState() {
     super.initState();
-    futurePopularRecipe = fetchRecipe('cupcake');
+    futureBrowseRecipe = fetchRecipe('cupcake');
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _searchController.dispose();
   }
 
   @override
@@ -47,19 +71,27 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Container(
               margin: const EdgeInsets.all(16.0),
               child: SearchBar(
+                onTap: () {
+                  _searchFocusNode.requestFocus();
+                },
+                controller: _searchController,
+                focusNode: _searchFocusNode,
                 backgroundColor: MaterialStateColor.resolveWith(
                   (states) => Theme.of(context).colorScheme.background
                 ),
                 shadowColor: MaterialStateColor.resolveWith(
                   (states) => Colors.transparent
                 ),
-                leading: const Icon(Icons.menu_outlined),
-                hintText: 'Search...',
-                padding: MaterialStateProperty.all<EdgeInsets>(
-                    const EdgeInsets.symmetric(horizontal: 16.0)
+                leading: IconButton(
+                  onPressed: () { } ,
+                  icon: const Icon(Icons.menu_outlined),
                 ),
-                trailing: const [
-                  Icon(Icons.search_outlined),
+                hintText: 'Search...',
+                trailing: [
+                  IconButton(
+                    onPressed: _onSearchButtonPressed,
+                    icon: const Icon(Icons.search_outlined),
+                  ),
                 ],
               ),
             ),
@@ -96,22 +128,27 @@ class BrowseFragment extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Recipe>>(
-      future: futurePopularRecipe,
+      future: futureBrowseRecipe,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
         } else if (snapshot.hasData) {
-          return ListView.builder(
-            itemCount: snapshot.data!.length,
-            itemBuilder: (context, index) {
-              final recipe = snapshot.data![index];
-              return RecipeCard(id: recipe.id, title: recipe.title, image: recipe.image);
-            },
-          );
+          if (snapshot.data!.isEmpty) {
+            return const Center(child: Text('No recipe found.'));
+          } else {
+            return ListView.builder(
+              itemCount: snapshot.data!.length,
+              itemBuilder: (context, index) {
+                final recipe = snapshot.data![index];
+
+                return RecipeCard(id: recipe.id, title: recipe.title, image: recipe.image);
+              },
+            );
+          }
         } else {
-          return const Center(child: Text('No recipe found.'));
+          throw Exception();
         }
       },
     );

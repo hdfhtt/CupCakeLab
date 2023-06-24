@@ -31,6 +31,22 @@ class ViewRecipeScreenState extends State<ViewRecipeScreen> {
       appBar: AppBar(
         backgroundColor: backgroundColor,
         scrolledUnderElevation: 0.0,
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 4.0),
+            child: IconButton(
+              onPressed: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Added to favorite.'),
+                ));
+              },
+              isSelected: false,
+              selectedIcon: const Icon(Icons.favorite),
+              icon: const Icon(Icons.favorite_outline),
+            ),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),

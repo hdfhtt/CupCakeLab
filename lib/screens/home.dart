@@ -18,7 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
 
   int _selectedTabIndex = 0;
-  Widget _currentFragment = const BrowseFragment();
+  Widget _currentFragment = const PopularFragment();
 
   void _onDestinationSelected(int index) {
     setState(() {
@@ -142,6 +142,7 @@ class PopularFragment extends StatelessWidget {
             id: prefetchRecipes[index]['id'],
             title: prefetchRecipes[index]['title'],
             image: prefetchRecipes[index]['image'],
+            summary: prefetchRecipes[index]['summary'],
           );
         },
       ),

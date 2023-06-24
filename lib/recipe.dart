@@ -2,15 +2,14 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'screens/view_recipe.dart';
-
 import './main.dart';
 
 final List<dynamic> prefetchRecipes = [
-  {'id': 618602, 'title': 'Classic Vanilla Cupcake', 'image': 'https://www.allrecipes.com/thmb/GsldgnTeewAv5eEqoxQ7E1iAKO8=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/157877-vanilla-cupcakes-ddmfs-2X1-0399-1b671dfd598548b1b0339076d062a758.jpg'},
-  {'id': 462433, 'title': 'Chocolate Fudge Cupcake', 'image': 'https://moversandbakers.co.uk/wp-content/uploads/2022/05/Chocolate-Fudge-Cupcakes_0770.jpg'},
-  {'id': 658108, 'title': 'Red Velvet Cupcake', 'image': 'https://freshaprilflours.com/wp-content/uploads/2017/09/rv-cupcakes-07.jpg'},
-  {'id': 1002592, 'title': 'Lemon Blueberry Cupcake', 'image': 'https://bubbapie.com/wp-content/uploads/2020/02/Lemon-Blueberry-Cupcakes.jpg'},
-  {'id': 350420, 'title': 'Carrot Cupcake with Cream Cheese Frosting', 'image': 'https://eatsbythebeach.com/wp-content/uploads/2022/02/Ultimate-Carrot-Cake-Cupcakes-1-Eats-By-The-Beach.jpeg'},
+  {'id': 618602, 'title': 'Classic Vanilla Cupcake', 'summary': 'A timeless fluffy vanilla cupcakes', 'image': 'https://www.allrecipes.com/thmb/GsldgnTeewAv5eEqoxQ7E1iAKO8=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/157877-vanilla-cupcakes-ddmfs-2X1-0399-1b671dfd598548b1b0339076d062a758.jpg'},
+  {'id': 462433, 'title': 'Chocolate Fudge Cupcake', 'summary': 'Rich and indulgent chocolate fudge cupcakes', 'image': 'https://moversandbakers.co.uk/wp-content/uploads/2022/05/Chocolate-Fudge-Cupcakes_0770.jpg'},
+  {'id': 658108, 'title': 'Red Velvet Cupcake', 'summary': 'Cocoa-infused, vibrant cupcakes with cream cheese frosting', 'image': 'https://freshaprilflours.com/wp-content/uploads/2017/09/rv-cupcakes-07.jpg'},
+  {'id': 1002592, 'title': 'Lemon Blueberry Cupcake', 'summary': 'A refreshing lemon and blueberry cupcakes','image': 'https://bubbapie.com/wp-content/uploads/2020/02/Lemon-Blueberry-Cupcakes.jpg'},
+  {'id': 350420, 'title': 'Carrot Cupcake with Cream Cheese Frosting', 'summary': 'A moist spiced carrot cupcakes with tangy cream cheese frosting', 'image': 'https://eatsbythebeach.com/wp-content/uploads/2022/02/Ultimate-Carrot-Cake-Cupcakes-1-Eats-By-The-Beach.jpeg'},
 ];
 
 class Recipe {
@@ -87,16 +86,20 @@ Future<List<String>> fetchRecipeIngredients(int id) async {
 }
 
 class RecipeCard extends StatelessWidget {
-  const RecipeCard({
+  final int id;
+  final String title;
+  final String image;
+  String summary;
+
+  RecipeCard({
     super.key,
     required this.id,
     required this.title,
     required this.image,
+    this.summary = '',
   });
 
-  final int id;
-  final String title;
-  final String image;
+  late bool hasSummary = summary.isNotEmpty ? true : false;
 
   @override
   Widget build(BuildContext context) {
@@ -123,16 +126,38 @@ class RecipeCard extends StatelessWidget {
               fit: BoxFit.cover,
               filterQuality: FilterQuality.high,
               isAntiAlias: true,
+              loadingBuilder: (context, child, loadingProgress) {
+                if (loadingProgress == null) {
+                  return child;
+                } else {
+                  return const CircularProgressIndicator();
+                }
+              },
             ),
 
             Container(
               padding: const EdgeInsets.all(16.0),
               height: 80.0,
               width: double.infinity,
-              child: Text(title,
-                style: Theme.of(context).textTheme.titleMedium,
-                textAlign: TextAlign.left,
-                maxLines: 2,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Text(title,
+                    style: Theme.of(context).textTheme.titleMedium,
+                    maxLines: hasSummary ? 1 : 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  Visibility(
+                    visible: hasSummary,
+                    child: Text(summary,
+                      style: Theme.of(context).textTheme.bodySmall,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
               ),
             ),
           ],

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../instruction.dart';
 
+/// ViewRecipeScreen is a stateful widget, which show information of a selected
+/// recipe with its information accordingly.
 class ViewRecipeScreen extends StatefulWidget {
   const ViewRecipeScreen({super.key, required this.id, required this.title, required this.image});
 
@@ -19,6 +21,8 @@ class ViewRecipeScreenState extends State<ViewRecipeScreen> {
   @override
   void initState() {
     super.initState();
+
+    // Fetch the recipe instructions when initiated.
     futureRecipeInstructions = fetchInstruction(widget.id);
   }
 
@@ -35,6 +39,7 @@ class ViewRecipeScreenState extends State<ViewRecipeScreen> {
           Padding(
             padding: const EdgeInsets.only(right: 4.0),
             child: IconButton(
+              // Show add to favorite SnackBar when button is pressed.
               onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
@@ -54,6 +59,7 @@ class ViewRecipeScreenState extends State<ViewRecipeScreen> {
           mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.max,
           children: [
+            // This will show the title of the recipe.
             SizedBox(
               width: double.infinity,
               child: Text(widget.title,
@@ -61,6 +67,8 @@ class ViewRecipeScreenState extends State<ViewRecipeScreen> {
                 textAlign: TextAlign.left,
               ),
             ),
+
+            // This will show the image of the recipe.
             Container(
               width: double.infinity,
               margin: const EdgeInsets.symmetric(vertical: 16.0),
@@ -73,6 +81,7 @@ class ViewRecipeScreenState extends State<ViewRecipeScreen> {
                 ),
               ),
             ),
+
             SizedBox(
               width: double.infinity,
               child: Text('Instructions',
@@ -81,6 +90,9 @@ class ViewRecipeScreenState extends State<ViewRecipeScreen> {
               ),
             ),
             const SizedBox(height: 8.0),
+
+            /// The following will generate a list of instruction steps using
+            /// FutureBuilder() and ListView.builder().
             FutureBuilder(
               future: futureRecipeInstructions,
               builder: (context, snapshot) {
@@ -106,6 +118,7 @@ class ViewRecipeScreenState extends State<ViewRecipeScreen> {
                               textAlign: TextAlign.left,
                             ),
                           ),
+
                           SizedBox(
                             width: double.infinity,
                             child: Text(instruction,
@@ -128,5 +141,4 @@ class ViewRecipeScreenState extends State<ViewRecipeScreen> {
       ),
     );
   }
-
 }

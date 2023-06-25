@@ -5,7 +5,9 @@ void main() {
   runApp(const CupCakeLab());
 }
 
-// Spoonacular API Key
+/// It is recommended to use your own Spoonacular API, as there can only be 150
+/// points per day in the free account. For more information please refer to
+/// https://spoonacular.com/food-api/pricing website.
 const String apiKey = 'c65fcf39f282417ea467298705e9c52d';
 
 class CupCakeLab extends StatelessWidget {

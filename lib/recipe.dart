@@ -4,6 +4,8 @@ import 'package:http/http.dart' as http;
 import 'screens/view_recipe.dart';
 import './main.dart';
 
+/// This is a prefetched recipes of the top 5 cupcakes recipe all the time to
+/// provide better user experience and faster loading time for the home screen.
 final List<dynamic> prefetchRecipes = [
   {'id': 618602, 'title': 'Classic Vanilla Cupcake', 'summary': 'A timeless fluffy vanilla cupcakes', 'image': 'https://www.allrecipes.com/thmb/GsldgnTeewAv5eEqoxQ7E1iAKO8=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/157877-vanilla-cupcakes-ddmfs-2X1-0399-1b671dfd598548b1b0339076d062a758.jpg'},
   {'id': 462433, 'title': 'Chocolate Fudge Cupcake', 'summary': 'Rich and indulgent chocolate fudge cupcakes', 'image': 'https://moversandbakers.co.uk/wp-content/uploads/2022/05/Chocolate-Fudge-Cupcakes_0770.jpg'},
@@ -12,6 +14,7 @@ final List<dynamic> prefetchRecipes = [
   {'id': 350420, 'title': 'Carrot Cupcake with Cream Cheese Frosting', 'summary': 'A moist spiced carrot cupcakes with tangy cream cheese frosting', 'image': 'https://eatsbythebeach.com/wp-content/uploads/2022/02/Ultimate-Carrot-Cake-Cupcakes-1-Eats-By-The-Beach.jpeg'},
 ];
 
+/// Represents a recipe object with id, title, and image properties.
 class Recipe {
   final int id;
   final String title;
@@ -32,11 +35,9 @@ class Recipe {
   }
 }
 
-/* Make sure to add the following permission in AndroidManifest.xml
- * <!-- Required to fetch data from the internet. -->
- * <uses-permission android:name="android.permission.INTERNET" />
- */
-
+/// Fetch recipe of the given query using the Spoonacular API. The sort is set
+/// to random to give variation of result. Return the list of recipes provided
+/// by the Spoonacular API.
 Future<List<Recipe>> fetchRecipe(String query) async {
   final queryParameters = {
     'apiKey': apiKey,
@@ -48,12 +49,14 @@ Future<List<Recipe>> fetchRecipe(String query) async {
   final response = await http.get(uri);
 
   if (response.statusCode == 200) {
+    // Create an empty list of Recipe
     List<Recipe> recipes = [];
 
+    // The fetched data will be decode and store in the new list called results
     Map<String, dynamic> data = jsonDecode(response.body);
-
     List<dynamic> results = data['results'];
 
+    // Iterate throughout the list and add each recipe to the recipes list.
     for (var result in results) {
       Recipe recipe = Recipe.fromJson(result);
       recipes.add(recipe);
@@ -65,6 +68,9 @@ Future<List<Recipe>> fetchRecipe(String query) async {
   }
 }
 
+
+/// Fetch recipe ingredients by the given id as the perimeter. Return the list
+/// of ingredient for the particular recipe.
 Future<List<String>> fetchRecipeIngredients(int id) async {
   final response = await http.get(Uri.parse('https://api.spoonacular.com/recipes/$id/ingredientWidget.json'));
 
@@ -85,6 +91,8 @@ Future<List<String>> fetchRecipeIngredients(int id) async {
   }
 }
 
+/// This is a custom widget act as card and will be use to display placeholder
+/// image, recipe name, and the summary (optional).
 class RecipeCard extends StatelessWidget {
   final int id;
   final String title;
@@ -110,6 +118,7 @@ class RecipeCard extends StatelessWidget {
       child: InkWell(
         borderRadius: BorderRadius.circular(16.0),
         onTap: () {
+          // Open the ViewRecipeScreen() when tapped.
           Navigator.push(context, MaterialPageRoute(
             builder: (context) => ViewRecipeScreen(
               id: id,
@@ -127,6 +136,7 @@ class RecipeCard extends StatelessWidget {
               filterQuality: FilterQuality.high,
               isAntiAlias: true,
               loadingBuilder: (context, child, loadingProgress) {
+                // Show CircularProgressIndicator() when image is loading.
                 if (loadingProgress == null) {
                   return child;
                 } else {
@@ -149,6 +159,7 @@ class RecipeCard extends StatelessWidget {
                     maxLines: hasSummary ? 1 : 2,
                     overflow: TextOverflow.ellipsis,
                   ),
+                  // Hide if no summary property is provided.
                   Visibility(
                     visible: hasSummary,
                     child: Text(summary,

@@ -1,4 +1,4 @@
-<img src="assets/icon/Logo.png" width="192" align="right" hspace="20" />
+<img src='assets/logo.png' width='192' align='right' hspace='20' />
 
 # CupCakeLab
 <p align='justify'><b>CupCakeLab</b> is a recipe library app where you can browse, search, and save your favorite cupcake recipes. This app is powered by <b><a href='https://spoonacular.com/food-api'>Spoonacular API</a></b>. A video demonstration of the app can be found <b><a href='https://www.youtube.com/watch?v=UKyGxT__bKM'>here</a></b>.</p>
@@ -9,6 +9,22 @@
 - Save cupcake recipe.
 
 ### Screenshots:
+<table>
+  <tr>
+    <td>
+      <img src='https://i.imgur.com/hkFCGlt.jpg' alt='CupCakeLab Splash Screen'>
+      <p>Splash Screen</p>
+    </td>
+    <td>
+      <img src='https://i.imgur.com/5ewETMF.jpg' alt='CupCakeLab Home Screen'>
+      <p>Home Screen</p>
+    </td>
+    <td>
+      <img src='https://i.imgur.com/iouFxSU.jpg' alt='CupCakeLab View Recipe Screen'>
+      <p>View Recipe Screen</p>
+    </td>
+  </tr>
+</table>
 
 ## Project Information
 This is a Flutter project assigned by <b>Dr. Rizal Bin Mohd Nor</b> for CSCI 4311: <i>Mobile Application Development</i> under Kulliyah of Information & Communication Technology, IIUM.</p>
@@ -20,7 +36,7 @@ This is a Flutter project assigned by <b>Dr. Rizal Bin Mohd Nor</b> for CSCI 431
 | 2   | Nazurin Qamarina Binti Jamaludin | 2118478 |
 | 3   | Muhammad Hadif Bin Mohd Hatta    | 2114589 |
 
-<sub>* Please note that all the works are distributed equally; all commits in this repository do not determine the project distributions since not everyone is familiar with using GitHub and everyone has a different style of committing changes, especially in terms of total number of commits.</sub>
+<sub>* Please note that all the works are distributed equally; all commits in this repository do not determine the project distributions since not everyone is familiar with using GitHub and everyone has a different style of committing changes, especially in terms of the total number of commits.</sub>
 
 ## Getting Started
 1. Make sure to update your Flutter to at least version `3.0.0` or later.
@@ -40,7 +56,7 @@ This is a Flutter project assigned by <b>Dr. Rizal Bin Mohd Nor</b> for CSCI 431
 ```bash
   $ dart pub run flutter_launcher_icons:main
 ```
-5. To generate the app splashscreen, execute the following command:
+5. To generate the app splash screen, execute the following command:
 ```bash
   $ dart run flutter_native_splash:create
 ```
@@ -56,7 +72,7 @@ const String apiKey = /* YOUR SPOONACULAR API KEY */;
 | :-: | :---------------- | :---- |
 | 1   | `flutter ^3.0.0` | Base SDK, and version 3.0.0 is required for Material 3 **[SearchBar](https://api.flutter.dev/flutter/material/SearchBar-class.html)**. |
 | 2   | `http` | Required to fetch data from the internet. |
-| 3   | `flutter_native_splash` | Required to generate native splashscreens for both iOS and Android. |
+| 3   | `flutter_native_splash` | Required to generate native splash screens for both iOS and Android. |
 | 4   | `flutter_launcher_icons` | Required to generate native app icons for both iOS and Android. |
 
 ## Known Issues
@@ -64,4 +80,4 @@ const String apiKey = /* YOUR SPOONACULAR API KEY */;
 - Searching on the Browse page will not take any effect.
 
 ## References
-- All references used for the Material 3 implementation can be found [here](https://m3.material.io/).
+- All references used for the Material 3 implementation can be found **[here](https://m3.material.io/)**.
